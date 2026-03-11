@@ -21,7 +21,7 @@ const ExportPanel = dynamic(
 )
 
 const DEFAULT_INPUT = '#3b82f6'
-const DEFAULT_PALETTE_NAME = 'color'
+const DEFAULT_PALETTE_NAME = 'primary'
 
 interface PaletteResult {
   steps: PaletteStep[]
