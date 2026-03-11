@@ -12,17 +12,18 @@ interface ExportPanelProps {
   paletteName: string;
   steps: PaletteStep[];
   darkSteps: PaletteStep[];
+  neutralSteps?: PaletteStep[];
 }
 
-export function ExportPanel({ paletteName, steps, darkSteps }: ExportPanelProps) {
+export function ExportPanel({ paletteName, steps, darkSteps, neutralSteps }: ExportPanelProps) {
   const [activeTab, setActiveTab] = useState<Tab>("css");
 
   const content =
     activeTab === "css"
-      ? exportCss(paletteName, steps, darkSteps)
+      ? exportCss(paletteName, steps, darkSteps, neutralSteps)
       : activeTab === "tailwind"
-        ? exportTailwind(paletteName, steps)
-        : exportJson(paletteName, steps);
+        ? exportTailwind(paletteName, steps, neutralSteps)
+        : exportJson(paletteName, steps, neutralSteps);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "css", label: "CSS" },
@@ -57,10 +58,10 @@ export function ExportPanel({ paletteName, steps, darkSteps }: ExportPanelProps)
             <pre className="overflow-x-auto rounded-lg bg-zinc-950 p-4 text-xs leading-relaxed text-zinc-200 dark:bg-zinc-900">
               <code>
                 {tab.id === "css"
-                  ? exportCss(paletteName, steps, darkSteps)
+                  ? exportCss(paletteName, steps, darkSteps, neutralSteps)
                   : tab.id === "tailwind"
-                    ? exportTailwind(paletteName, steps)
-                    : exportJson(paletteName, steps)}
+                    ? exportTailwind(paletteName, steps, neutralSteps)
+                    : exportJson(paletteName, steps, neutralSteps)}
               </code>
             </pre>
           </TabsContent>
