@@ -23,23 +23,23 @@ APCA measures **luminance contrast (Lc)** — the perceived lightness/darkness d
 
 APCA expresses contrast as **Lc values** (0–106 scale). Light text on dark backgrounds produces **negative** values; use the **absolute value** when consulting lookup tables.
 
-| Lc Value | Use Case |
-|----------|----------|
-| **Lc 90** | Preferred for body text; maximum readability |
-| **Lc 75** | Minimum for body/fluent text (Bronze) |
-| **Lc 60** | General content 16px+; large text at lower weights |
-| **Lc 45** | Large fluent text 32px+; sub-fluent content (Gold) |
+| Lc Value  | Use Case                                                   |
+| --------- | ---------------------------------------------------------- |
+| **Lc 90** | Preferred for body text; maximum readability               |
+| **Lc 75** | Minimum for body/fluent text (Bronze)                      |
+| **Lc 60** | General content 16px+; large text at lower weights         |
+| **Lc 45** | Large fluent text 32px+; sub-fluent content (Gold)         |
 | **Lc 30** | Non-fluent text (Gold); placeholder/disabled (limited use) |
-| **Lc 15** | Logo/brand reduction allowance (from base minimum) |
+| **Lc 15** | Logo/brand reduction allowance (from base minimum)         |
 
 ### Font Size × Weight Examples (Reference Fonts: Helvetica / Arial)
 
 | Size | Weight | Minimum Lc |
-|------|--------|------------|
-| 16px | 400 | Lc 90 |
-| 18px | 400 | Lc 75 |
-| 24px | 400 | Lc 60 |
-| 36px | 400 | Lc 45 |
+| ---- | ------ | ---------- |
+| 16px | 400    | Lc 90      |
+| 18px | 400    | Lc 75      |
+| 24px | 400    | Lc 60      |
+| 36px | 400    | Lc 45      |
 
 > Larger fonts at heavier weights allow lower Lc; smaller/lighter fonts demand higher Lc.
 
@@ -47,24 +47,25 @@ APCA expresses contrast as **Lc values** (0–106 scale). Light text on dark bac
 
 ## Text Use Case Categories
 
-| Category | Definition | Examples |
-|----------|------------|---------|
-| **Fluent** | 2+ continuous lines of text; primary reading content | Body copy, headlines, captions, navigation |
-| **Sub-Fluent** | Secondary/ancillary content with reduced readability needs | Bylines, secondary nav, callouts, labels |
-| **Non-Fluent** | Non-content or incidental text | Placeholders, disabled controls, logos, image text, copyright |
+| Category       | Definition                                                 | Examples                                                      |
+| -------------- | ---------------------------------------------------------- | ------------------------------------------------------------- |
+| **Fluent**     | 2+ continuous lines of text; primary reading content       | Body copy, headlines, captions, navigation                    |
+| **Sub-Fluent** | Secondary/ancillary content with reduced readability needs | Bylines, secondary nav, callouts, labels                      |
+| **Non-Fluent** | Non-content or incidental text                             | Placeholders, disabled controls, logos, image text, copyright |
 
 ---
 
 ## Conformance Levels
 
 ### 🥉 Bronze
+
 **Scope:** Primary content text only — simplest to implement, no lookup tables required.
 
-| Content Type | Minimum Lc | Preferred Lc |
-|--------------|-----------|--------------|
-| Body text (fluent) | **Lc 75** | Lc 90 |
-| Other content (16px+) | **Lc 60** | — |
-| Large fluent (32px+) | **Lc 45** | — |
+| Content Type          | Minimum Lc | Preferred Lc |
+| --------------------- | ---------- | ------------ |
+| Body text (fluent)    | **Lc 75**  | Lc 90        |
+| Other content (16px+) | **Lc 60**  | —            |
+| Large fluent (32px+)  | **Lc 45**  | —            |
 
 - No minimum font size enforced
 - No font-matching to reference fonts required
@@ -73,13 +74,14 @@ APCA expresses contrast as **Lc values** (0–106 scale). Light text on dark bac
 ---
 
 ### 🥈 Silver
+
 **Scope:** All text content, including secondary and non-fluent text.
 
-| Content Type | Minimum Size | Notes |
-|--------------|-------------|-------|
-| Content fonts | 13px | Must be qualified or prequalified |
-| Non-content fonts | 10px | — |
-| Logo text | — | Lc minimum reduced by 15 (floor: Lc 40) |
+| Content Type      | Minimum Size | Notes                                   |
+| ----------------- | ------------ | --------------------------------------- |
+| Content fonts     | 13px         | Must be qualified or prequalified       |
+| Non-content fonts | 10px         | —                                       |
+| Logo text         | —            | Lc minimum reduced by 15 (floor: Lc 40) |
 
 - Uses **font lookup tables** (size + weight pairs)
 - Fonts must be qualified against reference fonts (Helvetica Neue, Arial, Fira Sans, Kanit)
@@ -88,15 +90,16 @@ APCA expresses contrast as **Lc values** (0–106 scale). Light text on dark bac
 ---
 
 ### 🥇 Gold
+
 **Scope:** All text, with the strictest requirements.
 
-| Content Type | Minimum Size | Notes |
-|--------------|-------------|-------|
-| Content fonts | 18px | Fluent fonts must be qualified |
-| Non-content fonts | 12px | — |
-| Sub-fluent text | — | Minimum Lc 45 |
-| Non-fluent text | — | Minimum Lc 30 |
-| Logos | — | Minimum Lc 45 (no further reduction) |
+| Content Type      | Minimum Size | Notes                                |
+| ----------------- | ------------ | ------------------------------------ |
+| Content fonts     | 18px         | Fluent fonts must be qualified       |
+| Non-content fonts | 12px         | —                                    |
+| Sub-fluent text   | —            | Minimum Lc 45                        |
+| Non-fluent text   | —            | Minimum Lc 30                        |
+| Logos             | —            | Minimum Lc 45 (no further reduction) |
 
 - Uses lookup tables with stricter minimums
 - **Exchange Rules: choose at least 2** (see below)
@@ -107,13 +110,13 @@ APCA expresses contrast as **Lc values** (0–106 scale). Light text on dark bac
 
 Implementing Exchange Rules allows a reduction in base contrast requirements at Silver/Gold levels.
 
-| # | Rule |
-|---|------|
-| 1 | Multiple color schemes with persistent **user-controlled** selection (e.g., light/dark mode) |
-| 2 | Light mode body text following **Paper Reading Experience** guidelines |
-| 3 | **Proportional text zoom** polyfill |
-| 4 | User controls for body-text **weight, size, and spacing** |
-| 5 | **Hyper-legible fallback fonts** available for user activation |
+| #   | Rule                                                                                         |
+| --- | -------------------------------------------------------------------------------------------- |
+| 1   | Multiple color schemes with persistent **user-controlled** selection (e.g., light/dark mode) |
+| 2   | Light mode body text following **Paper Reading Experience** guidelines                       |
+| 3   | **Proportional text zoom** polyfill                                                          |
+| 4   | User controls for body-text **weight, size, and spacing**                                    |
+| 5   | **Hyper-legible fallback fonts** available for user activation                               |
 
 ---
 
@@ -134,12 +137,12 @@ Implementing Exchange Rules allows a reduction in base contrast requirements at 
 
 ### Standard Test Environment
 
-| Parameter | Value |
-|-----------|-------|
-| Display | sRGB LCD, 72–112 ppi |
-| Peak white | 140–220 cd/m² |
-| Ambient light | ~350 lux |
-| Observer distance | 24"–37" (60–90 cm) |
+| Parameter         | Value                |
+| ----------------- | -------------------- |
+| Display           | sRGB LCD, 72–112 ppi |
+| Peak white        | 140–220 cd/m²        |
+| Ambient light     | ~350 lux             |
+| Observer distance | 24"–37" (60–90 cm)   |
 
 ---
 
