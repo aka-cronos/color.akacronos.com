@@ -1,4 +1,4 @@
-import { calcAPCA } from "apca-w3";
+import { APCAcontrast } from "apca-w3";
 import { oklchToY } from "./gamut";
 import type { OklchColor, ApcaResult } from "./types";
 
@@ -9,9 +9,9 @@ import type { OklchColor, ApcaResult } from "./types";
 export function computeApca(bgOklch: OklchColor): ApcaResult {
   const bgY = oklchToY(bgOklch);
 
-  // calcAPCA(textY, bgY) → Lc value (signed)
-  const lcWhite = calcAPCA(1.0, bgY) as number;
-  const lcBlack = calcAPCA(0.0, bgY) as number;
+  // APCAcontrast(txtY, bgY) → Lc value (signed), takes pre-computed linear Y
+  const lcWhite = APCAcontrast(1.0, bgY);
+  const lcBlack = APCAcontrast(0.0, bgY);
 
   const absWhite = Math.abs(lcWhite);
   const absBlack = Math.abs(lcBlack);
