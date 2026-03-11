@@ -23,3 +23,28 @@ export function generateNeutralPalette(baseColor: OklchColor): PaletteStep[] {
     }
   })
 }
+
+export function generateNeutralDarkPalette(
+  baseColor: OklchColor,
+): PaletteStep[] {
+  const neutralBaseC = baseColor.c * NEUTRAL_CHROMA_FACTOR
+  return STEP_NAMES.map(name => {
+    const darkL = 1 - TARGET_L[name]
+    const c = computeChroma(darkL, neutralBaseC)
+    const { oklch: mappedOklch, hex } = gamutMap({
+      l: darkL,
+      c,
+      h: baseColor.h,
+    })
+    const oklch: OklchColor = { ...mappedOklch, h: baseColor.h }
+    const apca = computeApca(oklch)
+    return {
+      name,
+      oklch,
+      hex,
+      cssOklch: formatCssOklch(oklch),
+      apca,
+      isBase: false,
+    }
+  })
+}

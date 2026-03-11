@@ -1,4 +1,6 @@
-import { memo } from 'react'
+'use client'
+
+import { memo, useState } from 'react'
 import type { PaletteStep } from '@/lib/color/types'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -36,16 +38,25 @@ function ApcaBadge({
 }
 
 export const SwatchCard = memo(function SwatchCard({ step }: SwatchCardProps) {
+  const [copied, setCopied] = useState(false)
+
   const textStyle = {
     color: step.apca.textColor === 'white' ? '#ffffff' : '#000000',
   }
 
+  function handleCopy() {
+    navigator.clipboard.writeText(step.cssOklch)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
   return (
-    <Card className='overflow-hidden rounded-lg p-0 shadow-sm ring-1 ring-black/5 dark:ring-white/5'>
+    <Card className='overflow-hidden rounded-lg p-0 ring-1 ring-black/5 dark:ring-white/5'>
       {/* Color block */}
       <div
-        className='flex h-20 items-end justify-between p-2'
+        className='relative flex h-20 cursor-pointer items-end justify-between p-2'
         style={{ background: step.cssOklch }}
+        onClick={handleCopy}
       >
         <span className='text-xl leading-none font-bold' style={textStyle}>
           Aa
@@ -56,6 +67,12 @@ export const SwatchCard = memo(function SwatchCard({ step }: SwatchCardProps) {
           passes60={step.apca.passes60}
           passes45={step.apca.passes45}
         />
+        {/* Copied overlay */}
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-black/30 text-xs font-semibold text-white transition-opacity duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}
+        >
+          Copied
+        </div>
       </div>
 
       {/* Info */}
@@ -75,6 +92,9 @@ export const SwatchCard = memo(function SwatchCard({ step }: SwatchCardProps) {
         </div>
         <span className='truncate font-mono text-[10px] text-zinc-500 dark:text-zinc-400'>
           {step.hex}
+        </span>
+        <span className='truncate font-mono text-[9px] text-zinc-400 dark:text-zinc-500'>
+          {step.cssOklch}
         </span>
       </CardContent>
     </Card>
