@@ -26,9 +26,13 @@ export function gamutMap(oklch: OklchColor): {
   const hex = formatHex(inGamut) ?? '#000000'
 
   return {
-    oklch: { l: mapped.l ?? 0, c: mapped.c ?? 0, h: mapped.h ?? 0 },
+    oklch: { l: mapped.l ?? 0, c: mapped.c ?? 0, h: mapped.h ?? oklch.h },
     hex,
   }
+}
+
+export function formatCssOklch(oklch: OklchColor): string {
+  return `oklch(${oklch.l.toFixed(4)} ${oklch.c.toFixed(4)} ${oklch.h.toFixed(1)})`
 }
 
 /**

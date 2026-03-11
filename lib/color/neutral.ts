@@ -1,20 +1,17 @@
 import { STEP_NAMES, TARGET_L, computeChroma } from './generate'
-import { gamutMap } from './gamut'
+import { gamutMap, formatCssOklch } from './gamut'
 import { computeApca } from './apca'
 import type { OklchColor, PaletteStep } from './types'
 
 const NEUTRAL_CHROMA_FACTOR = 0.12
-
-function formatCssOklch(oklch: OklchColor): string {
-  return `oklch(${oklch.l.toFixed(4)} ${oklch.c.toFixed(4)} ${oklch.h.toFixed(1)})`
-}
 
 export function generateNeutralPalette(baseColor: OklchColor): PaletteStep[] {
   const neutralBaseC = baseColor.c * NEUTRAL_CHROMA_FACTOR
   return STEP_NAMES.map(name => {
     const l = TARGET_L[name]
     const c = computeChroma(l, neutralBaseC)
-    const { oklch, hex } = gamutMap({ l, c, h: baseColor.h })
+    const { oklch: mappedOklch, hex } = gamutMap({ l, c, h: baseColor.h })
+    const oklch: OklchColor = { ...mappedOklch, h: baseColor.h }
     const apca = computeApca(oklch)
     return {
       name,
