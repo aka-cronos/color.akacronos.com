@@ -1,4 +1,4 @@
-import type { PaletteStep } from '@/lib/color'
+import type { PaletteStep } from '@/lib/color/types'
 import { SwatchCard } from './SwatchCard'
 
 interface PaletteGridProps {

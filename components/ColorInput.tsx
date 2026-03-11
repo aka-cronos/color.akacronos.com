@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { parseColor } from '@/lib/color'
+import { parseColor } from '@/lib/color/parse'
 
 interface ColorInputProps {
   value: string
