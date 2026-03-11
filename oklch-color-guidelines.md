@@ -7,12 +7,12 @@
 
 ## Why OKLCH?
 
-| Format | Human-readable | P3 Gamut | Predictable Lightness | Hue Stability |
-|--------|:-:|:-:|:-:|:-:|
-| HEX/RGB | ✗ | ✗ | ✗ | — |
-| HSL | Partial | ✗ | ✗ (inconsistent) | ✗ |
-| LCH | ✓ | ✓ | ✓ | ✗ (blue shift 270–330°) |
-| **OKLCH** | **✓** | **✓** | **✓** | **✓** |
+| Format    | Human-readable | P3 Gamut | Predictable Lightness |      Hue Stability      |
+| --------- | :------------: | :------: | :-------------------: | :---------------------: |
+| HEX/RGB   |       ✗        |    ✗     |           ✗           |            —            |
+| HSL       |    Partial     |    ✗     |   ✗ (inconsistent)    |            ✗            |
+| LCH       |       ✓        |    ✓     |           ✓           | ✗ (blue shift 270–330°) |
+| **OKLCH** |     **✓**      |  **✓**   |         **✓**         |          **✓**          |
 
 OKLCH is the recommended color space for design systems because:
 
@@ -42,11 +42,11 @@ oklch(from <color> L C H / A)
 
 ### L — Lightness
 
-| Value | Description |
-|-------|-------------|
-| `0` / `0%` | Pure black |
-| `0.5` / `50%` | Mid-tone |
-| `1` / `100%` | Pure white |
+| Value         | Description |
+| ------------- | ----------- |
+| `0` / `0%`    | Pure black  |
+| `0.5` / `50%` | Mid-tone    |
+| `1` / `100%`  | Pure white  |
 
 - Type: `<number>` (0–1) or `<percentage>` (0%–100%)
 - Represents **perceived brightness** — not luminance, not HSL lightness
@@ -56,14 +56,14 @@ oklch(from <color> L C H / A)
 
 ### C — Chroma (Saturation/Colorfulness)
 
-| Value | Description |
-|-------|-------------|
-| `0` | No color (achromatic / grey) |
-| `0.1` | Muted, pastel-like |
-| `0.2` | Moderate saturation |
+| Value  | Description                                     |
+| ------ | ----------------------------------------------- |
+| `0`    | No color (achromatic / grey)                    |
+| `0.1`  | Muted, pastel-like                              |
+| `0.2`  | Moderate saturation                             |
 | `0.37` | Near sRGB gamut boundary (typical max for sRGB) |
-| `0.4+` | P3 / wide-gamut territory |
-| `~0.5` | Practical upper bound |
+| `0.4+` | P3 / wide-gamut territory                       |
+| `~0.5` | Practical upper bound                           |
 
 - Type: `<number>` (0–~0.5) or `<percentage>` (`100%` = `0.4`)
 - Theoretically unbounded, but **sRGB displays cap out around 0.37**
@@ -73,16 +73,16 @@ oklch(from <color> L C H / A)
 
 ### H — Hue
 
-| Angle | Approximate Color |
-|-------|------------------|
-| `0°` / `360°` | Magenta / Pink |
-| `20°–40°` | Red |
-| `60°–90°` | Orange → Yellow |
-| `90°–140°` | Yellow → Green |
-| `140°–180°` | Green → Cyan |
-| `180°–220°` | Cyan → Blue |
-| `220°–260°` | Blue |
-| `260°–320°` | Blue → Purple → Magenta |
+| Angle         | Approximate Color       |
+| ------------- | ----------------------- |
+| `0°` / `360°` | Magenta / Pink          |
+| `20°–40°`     | Red                     |
+| `60°–90°`     | Orange → Yellow         |
+| `90°–140°`    | Yellow → Green          |
+| `140°–180°`   | Green → Cyan            |
+| `180°–220°`   | Cyan → Blue             |
+| `220°–260°`   | Blue                    |
+| `260°–320°`   | Blue → Purple → Magenta |
 
 - Type: `<number>` or `<angle>` (0–360)
 - **Note:** Hue angles differ from HSL. Red ≈ `41°` in OKLCH vs. `0°` in HSL.
@@ -129,17 +129,17 @@ Browsers are required to use the OKLCH method per the CSS spec. To **target wide
 
 ```css
 /* Same hue and chroma — only lightness changes */
---color-50:  oklch(0.97 0.02 250);
+--color-50: oklch(0.97 0.02 250);
 --color-100: oklch(0.93 0.04 250);
 --color-200: oklch(0.85 0.08 250);
 --color-300: oklch(0.75 0.12 250);
 --color-400: oklch(0.65 0.18 250);
---color-500: oklch(0.55 0.22 250);  /* base */
---color-600: oklch(0.45 0.20 250);
+--color-500: oklch(0.55 0.22 250); /* base */
+--color-600: oklch(0.45 0.2 250);
 --color-700: oklch(0.35 0.17 250);
 --color-800: oklch(0.25 0.12 250);
 --color-900: oklch(0.15 0.07 250);
---color-950: oklch(0.10 0.04 250);
+--color-950: oklch(0.1 0.04 250);
 ```
 
 > Chroma should be **tapered** at very light and very dark ends — high chroma at extreme lightness values often exceeds gamut.
@@ -147,30 +147,40 @@ Browsers are required to use the OKLCH method per the CSS spec. To **target wide
 ### Relative Color Modifications
 
 ```css
-:root { --accent: oklch(0.60 0.22 250); }
+:root {
+  --accent: oklch(0.6 0.22 250);
+}
 
-.lighter { background: oklch(from var(--accent) calc(l + 0.15) c h); }
-.darker  { background: oklch(from var(--accent) calc(l - 0.15) c h); }
-.muted   { background: oklch(from var(--accent) l calc(c * 0.5) h); }
-.shifted { background: oklch(from var(--accent) l c calc(h + 30)); }
+.lighter {
+  background: oklch(from var(--accent) calc(l + 0.15) c h);
+}
+.darker {
+  background: oklch(from var(--accent) calc(l - 0.15) c h);
+}
+.muted {
+  background: oklch(from var(--accent) l calc(c * 0.5) h);
+}
+.shifted {
+  background: oklch(from var(--accent) l c calc(h + 30));
+}
 ```
 
 ### Harmonious Color Families (Hue Rotation)
 
 ```css
 /* Complementary */
---primary:      oklch(0.60 0.22 250);
---complementary: oklch(0.60 0.22 70);   /* +180° – ~yellow */
+--primary: oklch(0.6 0.22 250);
+--complementary: oklch(0.6 0.22 70); /* +180° – ~yellow */
 
 /* Triadic */
---triadic-1: oklch(0.60 0.22 250);
---triadic-2: oklch(0.60 0.22 130);     /* +120° */
---triadic-3: oklch(0.60 0.22 10);      /* +240° */
+--triadic-1: oklch(0.6 0.22 250);
+--triadic-2: oklch(0.6 0.22 130); /* +120° */
+--triadic-3: oklch(0.6 0.22 10); /* +240° */
 
 /* Analogous */
---analogous-1: oklch(0.60 0.22 220);   /* -30° */
---analogous-2: oklch(0.60 0.22 250);   /* base */
---analogous-3: oklch(0.60 0.22 280);   /* +30° */
+--analogous-1: oklch(0.6 0.22 220); /* -30° */
+--analogous-2: oklch(0.6 0.22 250); /* base */
+--analogous-3: oklch(0.6 0.22 280); /* +30° */
 ```
 
 ---
@@ -182,7 +192,7 @@ Because OKLCH lightness is perceptually uniform, dark mode palettes can be deriv
 ```css
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:   oklch(0.15 0.02 250);
+    --bg: oklch(0.15 0.02 250);
     --text: oklch(0.92 0.01 250);
   }
 }
@@ -201,11 +211,11 @@ When using OKLCH for palette generation, validate text contrast using **APCA Lc 
 - APCA measures **luminance contrast between text and background** for **accessibility compliance**
 - After defining colors in OKLCH, always compute APCA contrast for text pairings
 
-| OKLCH Role | APCA Role |
-|------------|-----------|
+| OKLCH Role            | APCA Role              |
+| --------------------- | ---------------------- |
 | Define palette colors | Validate text pairings |
-| Ensure visual harmony | Ensure readability |
-| Design tool | Accessibility tool |
+| Ensure visual harmony | Ensure readability     |
+| Design tool           | Accessibility tool     |
 
 ---
 
