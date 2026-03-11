@@ -1,18 +1,24 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import {
-  parseColor,
-  generatePalette,
-  generateDarkPalette,
-  generateNeutralPalette,
-} from '@/lib/color'
-import type { PaletteStep } from '@/lib/color'
+import dynamic from 'next/dynamic'
+import { parseColor } from '@/lib/color/parse'
+import { generatePalette } from '@/lib/color/generate'
+import { generateDarkPalette } from '@/lib/color/darkMode'
+import { generateNeutralPalette } from '@/lib/color/neutral'
+import type { PaletteStep } from '@/lib/color/types'
 import { ColorInput } from '@/components/ColorInput'
 import { PaletteGrid } from '@/components/PaletteGrid'
-import { ExportPanel } from '@/components/ExportPanel'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+
+const ExportPanel = dynamic(
+  () =>
+    import('@/components/ExportPanel').then(mod => ({
+      default: mod.ExportPanel,
+    })),
+  { ssr: false },
+)
 
 const DEFAULT_INPUT = '#3b82f6'
 const DEFAULT_PALETTE_NAME = 'color'
@@ -99,7 +105,7 @@ export default function Home() {
         </div>
 
         {/* Palettes */}
-        {hasPalette && (
+        {hasPalette ? (
           <>
             <PaletteGrid
               label={`${paletteName || 'color'} light`}
@@ -117,14 +123,14 @@ export default function Home() {
               neutralSteps={neutralSteps}
             />
           </>
-        )}
+        ) : null}
 
         {/* Empty state */}
-        {!hasPalette && !error && (
+        {!hasPalette && !error ? (
           <p className='text-sm text-zinc-400 dark:text-zinc-600'>
             Enter a color above to generate a palette.
           </p>
-        )}
+        ) : null}
       </div>
     </div>
   )

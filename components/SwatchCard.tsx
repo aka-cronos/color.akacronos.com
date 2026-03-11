@@ -1,4 +1,5 @@
-import type { PaletteStep } from '@/lib/color'
+import { memo } from 'react'
+import type { PaletteStep } from '@/lib/color/types'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -34,7 +35,7 @@ function ApcaBadge({
   )
 }
 
-export function SwatchCard({ step }: SwatchCardProps) {
+export const SwatchCard = memo(function SwatchCard({ step }: SwatchCardProps) {
   const textStyle = {
     color: step.apca.textColor === 'white' ? '#ffffff' : '#000000',
   }
@@ -78,4 +79,4 @@ export function SwatchCard({ step }: SwatchCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
