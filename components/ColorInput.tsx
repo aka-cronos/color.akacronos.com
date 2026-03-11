@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 interface ColorInputProps {
   value: string;
@@ -25,29 +27,19 @@ export function ColorInput({ value, onChange, error }: ColorInputProps) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <label
-        htmlFor="color-input"
-        className="text-sm font-medium text-zinc-700 dark:text-zinc-300"
-      >
-        Base color
-      </label>
-      <input
+    <Field data-invalid={!!error}>
+      <FieldLabel htmlFor="color-input">Base color</FieldLabel>
+      <Input
         id="color-input"
         type="text"
         value={draft}
         onChange={handleChange}
         placeholder="#3b82f6 or oklch(0.6 0.22 250)"
         spellCheck={false}
-        className={`w-full rounded-lg border px-3 py-2 font-mono text-sm outline-none transition-colors focus:ring-2 ${
-          error
-            ? "border-red-400 focus:ring-red-300 dark:border-red-600"
-            : "border-zinc-300 focus:border-indigo-400 focus:ring-indigo-200 dark:border-zinc-600 dark:focus:border-indigo-500"
-        } bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100`}
+        aria-invalid={!!error}
+        className="font-mono"
       />
-      {error && (
-        <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
-      )}
-    </div>
+      {error && <FieldError>{error}</FieldError>}
+    </Field>
   );
 }

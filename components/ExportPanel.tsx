@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CopyButton } from "./CopyButton";
 import type { PaletteStep } from "@/lib/color";
 import { exportCss, exportTailwind, exportJson } from "@/lib/color";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Tab = "css" | "tailwind" | "json";
 
@@ -20,8 +21,8 @@ export function ExportPanel({ paletteName, steps, darkSteps }: ExportPanelProps)
     activeTab === "css"
       ? exportCss(paletteName, steps, darkSteps)
       : activeTab === "tailwind"
-      ? exportTailwind(paletteName, steps)
-      : exportJson(paletteName, steps);
+        ? exportTailwind(paletteName, steps)
+        : exportJson(paletteName, steps);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "css", label: "CSS" },
@@ -38,27 +39,33 @@ export function ExportPanel({ paletteName, steps, darkSteps }: ExportPanelProps)
         <CopyButton text={content} />
       </div>
 
-      {/* Tab bar */}
-      <div className="flex gap-1 rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              activeTab === tab.id
-                ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => setActiveTab(v as Tab)}
+        className="flex flex-col gap-3"
+      >
+        <TabsList className="grid w-full grid-cols-3">
+          {tabs.map((tab) => (
+            <TabsTrigger key={tab.id} value={tab.id}>
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-      {/* Code block */}
-      <pre className="overflow-x-auto rounded-lg bg-zinc-950 p-4 text-xs leading-relaxed text-zinc-200 dark:bg-zinc-900">
-        <code>{content}</code>
-      </pre>
+        {tabs.map((tab) => (
+          <TabsContent key={tab.id} value={tab.id}>
+            <pre className="overflow-x-auto rounded-lg bg-zinc-950 p-4 text-xs leading-relaxed text-zinc-200 dark:bg-zinc-900">
+              <code>
+                {tab.id === "css"
+                  ? exportCss(paletteName, steps, darkSteps)
+                  : tab.id === "tailwind"
+                    ? exportTailwind(paletteName, steps)
+                    : exportJson(paletteName, steps)}
+              </code>
+            </pre>
+          </TabsContent>
+        ))}
+      </Tabs>
     </section>
   );
 }
