@@ -6,9 +6,11 @@ import type { PaletteStep } from "@/lib/color";
 import { ColorInput } from "@/components/ColorInput";
 import { PaletteGrid } from "@/components/PaletteGrid";
 import { ExportPanel } from "@/components/ExportPanel";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 const DEFAULT_INPUT = "#3b82f6";
-const PALETTE_NAME = "color";
+const DEFAULT_PALETTE_NAME = "color";
 
 interface PaletteResult {
   steps: PaletteStep[];
@@ -19,6 +21,7 @@ interface PaletteResult {
 
 export default function Home() {
   const [colorInput, setColorInput] = useState(DEFAULT_INPUT);
+  const [paletteName, setPaletteName] = useState(DEFAULT_PALETTE_NAME);
 
   const { steps, darkSteps, neutralSteps, error } = useMemo<PaletteResult>(() => {
     const baseColor = parseColor(colorInput);
@@ -60,22 +63,37 @@ export default function Home() {
         </header>
 
         {/* Input */}
-        <div className="max-w-md">
-          <ColorInput
-            value={colorInput}
-            onChange={setColorInput}
-            error={error}
-          />
+        <div className="flex flex-col sm:flex-row gap-6 max-w-2xl">
+          <div className="flex-1">
+            <ColorInput
+              value={colorInput}
+              onChange={setColorInput}
+              error={error}
+            />
+          </div>
+          <div className="flex-1">
+            <Field>
+              <FieldLabel htmlFor="palette-name">Palette Name</FieldLabel>
+              <Input
+                id="palette-name"
+                type="text"
+                value={paletteName}
+                onChange={(e) => setPaletteName(e.target.value)}
+                placeholder="e.g. primary, brand, accent"
+                spellCheck={false}
+              />
+            </Field>
+          </div>
         </div>
 
         {/* Palettes */}
         {hasPalette && (
           <>
-            <PaletteGrid label="Light palette" steps={steps} />
-            <PaletteGrid label="Dark palette" steps={darkSteps} />
-            <PaletteGrid label="Neutral palette" steps={neutralSteps} />
+            <PaletteGrid label={`${paletteName || "color"} light`} steps={steps} />
+            <PaletteGrid label={`${paletteName || "color"} dark`} steps={darkSteps} />
+            <PaletteGrid label="Neutral" steps={neutralSteps} />
             <ExportPanel
-              paletteName={PALETTE_NAME}
+              paletteName={paletteName || "color"}
               steps={steps}
               darkSteps={darkSteps}
               neutralSteps={neutralSteps}
