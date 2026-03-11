@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { parseColor, generatePalette, generateDarkPalette } from "@/lib/color";
+import { parseColor, generatePalette, generateDarkPalette, generateNeutralPalette } from "@/lib/color";
 import type { PaletteStep } from "@/lib/color";
 import { ColorInput } from "@/components/ColorInput";
 import { PaletteGrid } from "@/components/PaletteGrid";
@@ -13,18 +13,20 @@ const PALETTE_NAME = "color";
 interface PaletteResult {
   steps: PaletteStep[];
   darkSteps: PaletteStep[];
+  neutralSteps: PaletteStep[];
   error: string | null;
 }
 
 export default function Home() {
   const [colorInput, setColorInput] = useState(DEFAULT_INPUT);
 
-  const { steps, darkSteps, error } = useMemo<PaletteResult>(() => {
+  const { steps, darkSteps, neutralSteps, error } = useMemo<PaletteResult>(() => {
     const baseColor = parseColor(colorInput);
     if (!baseColor) {
       return {
         steps: [],
         darkSteps: [],
+        neutralSteps: [],
         error: colorInput.trim()
           ? "Invalid color. Use a hex code like #3b82f6 or oklch(0.6 0.22 250)."
           : null,
@@ -34,10 +36,11 @@ export default function Home() {
       return {
         steps: generatePalette(baseColor),
         darkSteps: generateDarkPalette(baseColor),
+        neutralSteps: generateNeutralPalette(baseColor),
         error: null,
       };
     } catch {
-      return { steps: [], darkSteps: [], error: "Failed to generate palette." };
+      return { steps: [], darkSteps: [], neutralSteps: [], error: "Failed to generate palette." };
     }
   }, [colorInput]);
 
@@ -70,10 +73,12 @@ export default function Home() {
           <>
             <PaletteGrid label="Light palette" steps={steps} />
             <PaletteGrid label="Dark palette" steps={darkSteps} />
+            <PaletteGrid label="Neutral palette" steps={neutralSteps} />
             <ExportPanel
               paletteName={PALETTE_NAME}
               steps={steps}
               darkSteps={darkSteps}
+              neutralSteps={neutralSteps}
             />
           </>
         )}
