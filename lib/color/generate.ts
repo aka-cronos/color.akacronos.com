@@ -1,4 +1,4 @@
-import { gamutMap } from './gamut'
+import { gamutMap, formatCssOklch } from './gamut'
 import { computeApca } from './apca'
 import type { OklchColor, PaletteStep } from './types'
 
@@ -67,10 +67,6 @@ export function computeChroma(l: number, baseC: number): number {
   return baseC
 }
 
-function formatCssOklch(oklch: OklchColor): string {
-  return `oklch(${oklch.l.toFixed(4)} ${oklch.c.toFixed(4)} ${oklch.h.toFixed(1)})`
-}
-
 function buildStep(
   name: string,
   l: number,
@@ -79,7 +75,8 @@ function buildStep(
   isBase: boolean,
 ): PaletteStep {
   const c = computeChroma(l, baseC)
-  const { oklch, hex } = gamutMap({ l, c, h: baseH })
+  const { oklch: mappedOklch, hex } = gamutMap({ l, c, h: baseH })
+  const oklch: OklchColor = { ...mappedOklch, h: baseH }
   const apca = computeApca(oklch)
   return {
     name,
