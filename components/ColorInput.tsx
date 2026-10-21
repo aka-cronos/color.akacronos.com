@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { parseColor } from '@/lib/color/parse'
@@ -13,12 +13,14 @@ interface ColorInputProps {
 
 export function ColorInput({ value, onChange, error }: ColorInputProps) {
   const [draft, setDraft] = useState(value)
+  const [prevValue, setPrevValue] = useState(value)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Sync draft when external value changes (e.g. initial)
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value)
     setDraft(value)
-  }, [value])
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const raw = e.target.value
